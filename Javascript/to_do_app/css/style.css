@@ -1,0 +1,161 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+:root{
+    --primary-color: #f5f5f5;
+    --secondary-color: #555;
+    --tertiary-color: #333;
+    --cuart-color: #bdb6b6d2;
+    --botton-color: grey;
+    --info-color: #007bff;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107; 
+    --tamaño-letra0: .75rem;
+    --tamaño-letra1: 1rem;
+    --tamaño-letra2: 1.5rem;
+    --tamaño-letra3: 2rem;
+    --tamaño-letra4: 2.5rem;
+
+}
+
+body{
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+.centrado{
+    max-width: 800px;
+    margin: 0 auto;
+    
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    width: 90%;
+    padding: 0 .5rem;
+    @media screen and (max-width: 600px){
+        width: 90%;
+        padding: 0 .5rem;
+    }
+
+}
+header{
+    text-align: center;
+    margin: 1rem 0;
+    font-size: var(--tamaño-letra3);
+    font-weight: 600;
+    border-bottom: 2px solid ;
+    h1{
+        margin: 0;
+        padding: 2rem;
+        @media screen and (max-width: 600px){
+            font-size: var(--tamaño-letra4);
+            font-weight: 600;            
+        }
+    }
+}
+#taskFormSection {
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--tertiary-color);
+    background-color: var(--quart-color);
+    border-radius: 10px;
+    gap: 1rem;
+    
+    #taskForm{
+        display: flex;
+        h2{
+            margin: 1rem 0;
+            padding: 1rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            
+        }
+        #task{
+            width: 50%;
+            flex: 1;
+            padding: 1rem;
+            font-size: var(--tamaño-letra0);
+            border-radius: 5px;
+            margin: 1rem 0 1rem 1rem;
+        }
+        button{
+            padding: .25rem;
+            background-color: var(--info-color);
+            color: var(--primary-color);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: var(--tamaño-letra0);
+            /* @media screen and (max-width: 600px){
+                margin-left: 1rem;
+                width: 82%;
+                display: block;
+                
+            } */
+        }
+        button:hover{
+            background-color:var(--secondary-color);
+        }
+        #state {
+            margin: 1rem 0;
+            padding: 1rem;
+            font-size: var(--tamaño-letra0);
+            font-weight: 600;
+            background-color: var(--botton-color);
+            border-radius: 5px;     
+        }
+    }
+ }
+#tasksSection{
+    margin-top: .25rem;
+    padding: 1rem;
+    border: 1px solid var(--tertiary-color);
+    background-color: var(--quart-color);
+    border-radius: 10px;
+    gap: 1rem;
+    h2{
+        margin: 0;
+        padding: 1rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+        display: inline;
+        border-bottom: var(--tertiary-color) 1px solid;
+    }
+    #taskList{
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 1rem;
+        padding: 1rem;
+        border: 1px solid var(--tertiary-color);
+        background-color: var(--quart-color);
+        border-radius: 10px;
+        gap: 1rem;
+        li{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1rem 0;
+            list-style: none;
+            padding: 1rem;
+            background-color: var(--botton-color);
+            border-radius: 5px;
+            font-size: var(--tamaño-letra0);
+            button{
+                padding: .25rem;
+                background-color: var(--danger-color);
+                color: var(--primary-color);
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: var(--tamaño-letra0);
+            }
+            button:hover{
+                background-color:var(--secondary-color);
+            }
+        }
+    }
+}

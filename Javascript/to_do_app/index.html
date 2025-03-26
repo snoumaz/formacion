@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My To Do App</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <meta name="description" content="Gestiona tus tareas con My To Do App">
+</head>
+<body>
+    <header class="centrado">
+        <div><h1>My TO-DO App</h1></div>
+    </header>
+    <main class="centrado">
+        <section id="taskFormSection">
+            <h2>Introducir tarea y definir estado</h2>
+            <div>
+                <form id="taskForm">
+                    <input type="text" id="task" placeholder="Introduce una tarea">
+                    <select name="state" id="state">
+                        <option value="pending">Pendiente</option>
+                        <option value="in_progress">Ejecucion</option>
+                        <option value="completed">Realizada</option>
+                    </select>
+                    <button type="submit">Añadir tarea</button>
+                </form>
+            </div>
+        </section>
+        <section id="tasksSection">
+            <h2>Pendientes</h2>
+            <div id="tasksPending">
+                <ul><li>visual <button type="button">📤</button>  <button type="button">📤</button> <button type="button">📤</button></li></ul>
+            </div>
+        </section>
+        <section id="tasksSection">
+            <h2>Ejecucion</h2>
+            <div id="tasksList">
+                <ul></ul>
+            </div>
+        </section>
+        <section id="tasksSection">
+            <h2>Realizadas</h2>
+            <div id="tasksList">
+                <ul></ul>
+            </div>
+        </section>
+    </main>
+    <script src="./js/script.js"></script>
+</body>
+</html>
