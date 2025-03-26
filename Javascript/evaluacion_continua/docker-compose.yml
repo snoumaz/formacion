@@ -1,0 +1,8 @@
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "9999:80"
+    volumes:
+      - '/mnt/a/Javascript/evaluacion continua':/usr/share/nginx/html
+    restart: always

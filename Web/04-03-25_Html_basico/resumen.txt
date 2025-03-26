@@ -1,0 +1,64 @@
+HTML
+
+Sintaxis
+Hay etiquetas con una mision especifica. Hay que envolverlas entre estos simbolos:
+< etiqueta >
+La mayoria actuan como contenedores:
+- Texto
+- Imagenes
+- Otras etiquetas
+Por lo tanto hace falta delimitar un inicio y un final. Por Ejemplo
+< etiqueta > CONTENIDO </ etiqueta >
+
+Hay tambien etiquetas autoconclusivas
+< Meta >, <img>, <inputs>, <br>, <hr>, <link>
+
+Junto a las etiquetas se utilizan los atributos, que sirven para modificar o definir
+el comportamiento de las etiqueta. 
+Ejemplo:
+<img src="ruta_donde/esta_la/imagen" alt="texto_descriptivo">
+
+Los atributos son asi:
+
+nombre = " valor " (comillas simples o dobles)
+active = "false" -> active 
+
+ERRORES COMUNES
+
+-- No cerrar bien las etiquetas
+        Ejemplo:
+        <p> Un texto <span> cualquiera </p> </span>
+        <p> Un texto <span> cualquiera </span> /p>
+        <p> Un texto ........ 
+        <p> Un texto ........ <p>
+-- No utilizar bien las etiquetas
+        Ejemplo:
+        <p> Texto <p> mas texto </p> y mas texto </p>
+
+ETIQUETA DE TEXTO
+
+-- Titulos : h1 hasta el h6 => Son gerarquicos y semanticos
+-- Parrafos : <p> </p>
+-- Citas : <q> </q>
+-- origen de la cita: <cite> </cite>
+-- Texto para codigo y poesia : <pre> </pre>
+-- Para modificar el aspecto de una parte de las anteriores : <span> </span>
+-- Se pueden poner sub indeces <sub> y super indeces con <sup>
+
+ENLACES
+-- <a href='ruta de destino'> texto </a> pueden tener mas atributos
+-- <a href='mailto:correo_electronico'> correo </a> abrira el cliente de correo configurado en el equipo
+-- <a href='tel: numero de telefono'> telefono </a> abrira el cliente de llamada configurado en el equipo
+
+LISTAS (agrupaciones de elementos)
+-- Listas desordenadas ==> <ul> </ul> -> unorder list
+-- Listas ordenadas ==> <ol> </ol> -> order list
+        En ambas los elementos se identifican por <li> </li>
+-- Listas de descripcion o de definicion ==> <dl> </dl>
+   Aqui hay dos tipos de elementos/items
+   -- palabra o concepto a definir => <dt> </dt>
+   -- la definicion => <dd> </dd>
+-- Las listas se pueden anidar
+
+TABLAS
+-

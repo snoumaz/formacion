@@ -1,0 +1,1 @@
+Los Ficheros que ponen Mejora al final solo son ideas de como mejorar, el codigo principal.
