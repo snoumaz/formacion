@@ -1,0 +1,31 @@
+# Fases del proyecto
+# 0. Requerimientos
+# 1. Desarrollo de la app
+  # Ui
+    # Usabilidad
+    # Accesibilidad
+  # Coficicaion de la app
+    # Accesibilidad
+    # Frontend
+    # Backend
+        # Servidor
+        # Base de datos
+    
+# 2. Pruebas
+    # Pruebas de usabilidad
+    # Pruebas de accesibilidad
+    # Pruebas de frontend
+    # Pruebas de backend
+        # Pruebas de servidor
+        # Pruebas de base de datos
+        # Pruebas de integración
+        # Pruebas de rendimiento
+        # Pruebas de seguridad
+        # Pruebas de estrés
+        # Pruebas de carga
+        # Pruebas de regresión
+        # Pruebas de humo
+        # Pruebas de aceptación
+        # Pruebas de sistema
+        # Pruebas de unidad
+# 3. Producción
