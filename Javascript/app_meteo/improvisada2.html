@@ -1,0 +1,420 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for weather icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Leaflet CSS for map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css">
+    <style>
+        :root {
+            --primary-color: #2b6cb0;
+            --secondary-color: #3182ce;
+            --background-color: #f7fafc;
+            --card-bg: #ffffff;
+            --text-color: #1a202c;
+            --text-muted: #718096;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 1rem;
+        }
+
+        .weather-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box .form-control:focus {
+            box-shadow: 0 0 0 0.25rem rgba(49, 130, 206, 0.25);
+            border-color: var(--secondary-color);
+        }
+
+        .weather-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .detail-item {
+            background-color: rgba(237, 242, 247, 0.8);
+            padding: 0.75rem;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .detail-item:hover, .detail-item:focus {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .forecast-day {
+            background-color: rgba(237, 242, 247, 0.8);
+            padding: 0.75rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .forecast-day:hover, .forecast-day:focus {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .map-container {
+            height: 300px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .temperature {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .weather-icon {
+            font-size: 3.5rem;
+            margin: 0.5rem 0;
+            color: var(--primary-color);
+        }
+
+        .forecast-icon {
+            font-size: 2rem;
+            margin: 0.5rem 0;
+            color: var(--primary-color);
+        }
+
+        .badge-alert {
+            background-color: #f56565;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 6px;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        /* Focus states for accessibility */
+        button:focus, a:focus, input:focus, [tabindex]:focus {
+            outline: 3px solid var(--secondary-color);
+            outline-offset: 2px;
+        }
+
+        /* Skip to content link for screen readers */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--primary-color);
+            color: white;
+            padding: 8px;
+            z-index: 100;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        @media (max-width: 768px) {
+            .weather-details {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .forecast-container {
+                overflow-x: auto;
+            }
+            
+            .forecast-row {
+                min-width: 700px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link" aria-label="Skip to main content">Skip to main content</a>
+    <div class="container" id="main-content">
+        <h1 class="text-center mt-4 mb-4">Weather Dashboard</h1>
+        
+        <div class="weather-card">
+            <div class="search-box mb-4">
+                <form id="search-form" role="search" aria-label="Search for a city">
+                    <div class="input-group">
+                        <input 
+                            type="text" 
+                            id="city-search" 
+                            class="form-control" 
+                            placeholder="Enter city name" 
+                            aria-label="Enter city name"
+                            required
+                        >
+                        <button 
+                            type="submit" 
+                            class="btn btn-primary" 
+                            id="search-button"
+                            aria-label="Search"
+                        >
+                            <i class="fas fa-search" aria-hidden="true"></i> Search
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <div id="current-weather" aria-live="polite">
+                <div class="text-center" id="loading-message">
+                    <p>Enter a city to see weather information</p>
+                </div>
+                
+                <div id="weather-data" class="d-none">
+                    <div class="d-flex align-items-center justify-content-center flex-column flex-md-row mb-3">
+                        <div class="text-center me-md-4">
+                            <h2 id="city-name" class="h3 mb-0">City Name</h2>
+                            <p id="current-date" class="text-muted">Date</p>
+                            <div id="weather-icon" class="weather-icon" aria-hidden="true">
+                                <i class="fas fa-sun"></i>
+                            </div>
+                            <p id="weather-description" class="mb-2">Clear Sky</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="temperature" id="current-temp">0°C</p>
+                            <p class="mb-0">Feels like: <span id="feels-like">0°C</span></p>
+                        </div>
+                    </div>
+                    
+                    <div id="alerts-container" class="d-none mb-3">
+                        <h3 class="h5">Weather Alerts:</h3>
+                        <div id="alerts-list"></div>
+                    </div>
+                    
+                    <div class="weather-details">
+                        <div class="detail-item" tabindex="0">
+                            <i class="fas fa-tint" aria-hidden="true"></i>
+                            <span class="detail-label">Humidity</span>
+                            <span id="humidity" class="detail-value">0%</span>
+                        </div>
+                        <div class="detail-item" tabindex="0">
+                            <i class="fas fa-wind" aria-hidden="true"></i>
+                            <span class="detail-label">Wind Speed</span>
+                            <span id="wind-speed" class="detail-value">0 km/h</span>
+                        </div>
+                        <div class="detail-item" tabindex="0">
+                            <i class="fas fa-compress-alt" aria-hidden="true"></i>
+                            <span class="detail-label">Pressure</span>
+                            <span id="pressure" class="detail-value">0 hPa</span>
+                        </div>
+                        <div class="detail-item" tabindex="0">
+                            <i class="fas fa-eye" aria-hidden="true"></i>
+                            <span class="detail-label">Visibility</span>
+                            <span id="visibility" class="detail-value">0 km</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="weather-card">
+            <h2 class="h4 mb-3">7-Day Forecast</h2>
+            <div id="forecast-container" aria-live="polite">
+                <p id="forecast-message">Search for a city to see the forecast</p>
+                <div class="forecast-container">
+                    <div class="row forecast-row" id="forecast-data"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="weather-card">
+            <h2 class="h4 mb-3">Location Map</h2>
+            <div id="map-info">
+                <p>Search for a city to see its location on the map. The map is navigable using keyboard controls.</p>
+                <ul>
+                    <li>Use arrow keys to pan the map</li>
+                    <li>Use + and - keys to zoom in and out</li>
+                    <li>Press Tab to focus on map elements</li>
+                </ul>
+            </div>
+            <div id="map-container" class="map-container" aria-label="Interactive map showing city location" tabindex="0"></div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Leaflet JS for map -->
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            let map;
+            let marker;
+            
+            // Initialize map
+            function initMap() {
+                map = L.map('map-container').setView([0, 0], 2);
+                
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                    maxZoom: 18
+                }).addTo(map);
+                
+                // Add keyboard handlers for accessibility
+                $('#map-container').on('keydown', function(e) {
+                    const key = e.which;
+                    
+                    // Arrow keys for panning
+                    if (key === 37) { // Left
+                        map.panBy([-50, 0]);
+                    } else if (key === 38) { // Up
+                        map.panBy([0, -50]);
+                    } else if (key === 39) { // Right
+                        map.panBy([50, 0]);
+                    } else if (key === 40) { // Down
+                        map.panBy([0, 50]);
+                    } else if (key === 107 || key === 187) { // Plus
+                        map.zoomIn();
+                    } else if (key === 109 || key === 189) { // Minus
+                        map.zoomOut();
+                    }
+                });
+            }
+            
+            initMap();
+            
+            // Sample data for demonstration
+            const mockData = {
+                current: {
+                    city: "New York",
+                    date: new Date().toLocaleDateString('en-US', { 
+                        weekday: 'long', 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    }),
+                    temp: 23,
+                    feels_like: 25,
+                    humidity: 65,
+                    wind_speed: 12,
+                    pressure: 1012,
+                    visibility: 10,
+                    description: "Partly Cloudy",
+                    icon: "cloud-sun",
+                    coordinates: [40.7128, -74.0060],
+                    alerts: [{
+                        title: "Heat Advisory",
+                        description: "Heat index values up to 105 expected."
+                    }]
+                },
+                forecast: [
+                    { day: "Mon", high: 24, low: 18, icon: "sun" },
+                    { day: "Tue", high: 23, low: 17, icon: "cloud-sun" },
+                    { day: "Wed", high: 22, low: 16, icon: "cloud" },
+                    { day: "Thu", high: 20, low: 15, icon: "cloud-rain" },
+                    { day: "Fri", high: 19, low: 14, icon: "cloud-showers-heavy" },
+                    { day: "Sat", high: 21, low: 16, icon: "cloud-sun" },
+                    { day: "Sun", high: 23, low: 17, icon: "sun" }
+                ]
+            };
+            
+            // Handle form submission
+            $('#search-form').on('submit', function(e) {
+                e.preventDefault();
+                const city = $('#city-search').val().trim();
+                
+                if (city) {
+                    // In a real app, you would fetch data from a weather API here
+                    // For this demo, we'll use the mock data
+                    displayWeatherData(mockData);
+                }
+            });
+            
+            // Display weather data
+            function displayWeatherData(data) {
+                // Show weather data section
+                $('#loading-message').addClass('d-none');
+                $('#weather-data').removeClass('d-none');
+                
+                // Update current weather
+                $('#city-name').text(data.current.city);
+                $('#current-date').text(data.current.date);
+                $('#current-temp').text(`${data.current.temp}°C`);
+                $('#feels-like').text(`${data.current.feels_like}°C`);
+                $('#humidity').text(`${data.current.humidity}%`);
+                $('#wind-speed').text(`${data.current.wind_speed} km/h`);
+                $('#pressure').text(`${data.current.pressure} hPa`);
+                $('#visibility').text(`${data.current.visibility} km`);
+                $('#weather-description').text(data.current.description);
+                $('#weather-icon').html(`<i class="fas fa-${data.current.icon}"></i>`);
+                
+                // Display alerts if any
+                if (data.current.alerts && data.current.alerts.length > 0) {
+                    $('#alerts-container').removeClass('d-none');
+                    const alertsHtml = data.current.alerts.map(alert => 
+                        `<div class="badge-alert" role="alert">
+                            <strong>${alert.title}</strong>: ${alert.description}
+                         </div>`
+                    ).join('');
+                    $('#alerts-list').html(alertsHtml);
+                } else {
+                    $('#alerts-container').addClass('d-none');
+                }
+                
+                // Update forecast
+                $('#forecast-message').hide();
+                const forecastHtml = data.forecast.map(day => 
+                    `<div class="col">
+                        <div class="forecast-day" tabindex="0">
+                            <h3 class="h6">${day.day}</h3>
+                            <div class="forecast-icon" aria-hidden="true">
+                                <i class="fas fa-${day.icon}"></i>
+                            </div>
+                            <p class="mb-0">
+                                <span class="high">${day.high}°</span> / 
+                                <span class="low">${day.low}°</span>
+                            </p>
+                        </div>
+                     </div>`
+                ).join('');
+                $('#forecast-data').html(forecastHtml);
+                
+                // Update map
+                if (map) {
+                    const [lat, lng] = data.current.coordinates;
+                    map.setView([lat, lng], 10);
+                    
+                    if (marker) {
+                        marker.remove();
+                    }
+                    
+                    marker = L.marker([lat, lng])
+                        .addTo(map)
+                        .bindPopup(`<b>${data.current.city}</b><br>${data.current.description}, ${data.current.temp}°C`)
+                        .openPopup();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

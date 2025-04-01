@@ -1,0 +1,504 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: var(--dark-color);
+            transition: all 0.3s ease;
+        }
+        
+        .weather-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .weather-card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .weather-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .current-weather {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .current-temp {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .weather-icon {
+            font-size: 5rem;
+            margin: 15px 0;
+            color: var(--primary-color);
+        }
+        
+        .forecast-day {
+            padding: 15px;
+            text-align: center;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            height: 100%;
+        }
+        
+        .forecast-day:hover {
+            background-color: var(--light-color);
+            transform: scale(1.03);
+        }
+        
+        .day-name {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        .forecast-icon {
+            font-size: 2.5rem;
+            margin: 10px 0;
+        }
+        
+        .forecast-temp {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .forecast-details {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+        
+        .high-temp {
+            color: var(--danger-color);
+        }
+        
+        .low-temp {
+            color: var(--primary-color);
+        }
+        
+        .last-updated {
+            font-size: 0.8rem;
+            color: #95a5a6;
+            text-align: right;
+            margin-top: 10px;
+        }
+        
+        .weather-description {
+            text-transform: capitalize;
+            margin: 10px 0;
+        }
+        
+        .location {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .location i {
+            margin-right: 8px;
+            color: var(--primary-color);
+        }
+        
+        .weather-extras {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        
+        .weather-extra-item {
+            text-align: center;
+            padding: 10px;
+            min-width: 100px;
+        }
+        
+        .extra-icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            color: var(--secondary-color);
+        }
+        
+        .details-toggle {
+            background-color: transparent;
+            border: none;
+            color: var(--primary-color);
+            text-decoration: underline;
+            cursor: pointer;
+            padding: 0;
+            margin-top: 10px;
+        }
+        
+        .extended-details {
+            margin-top: 15px;
+            display: none;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .current-temp {
+                font-size: 3rem;
+            }
+            
+            .weather-icon {
+                font-size: 4rem;
+            }
+            
+            .forecast-row {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                padding-bottom: 15px;
+            }
+            
+            .forecast-col {
+                min-width: 140px;
+            }
+        }
+        
+        /* Loading indicator */
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Weather Icons Colors */
+        .sunny { color: #f39c12; }
+        .cloudy { color: #7f8c8d; }
+        .rainy { color: #3498db; }
+        .snowy { color: #ecf0f1; }
+        .stormy { color: #2c3e50; }
+        .windy { color: #95a5a6; }
+    </style>
+</head>
+<body>
+    <div class="weather-container">
+        <div class="weather-card">
+            <div class="current-weather">
+                <div class="location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h2 id="current-location">Loading location...</h2>
+                </div>
+                
+                <div id="weather-icon" class="weather-icon">
+                    <i class="fas fa-sun sunny"></i>
+                </div>
+                
+                <div class="current-temp" id="current-temp">72°F</div>
+                
+                <div class="weather-description" id="weather-description">Sunny</div>
+                
+                <div class="weather-extras">
+                    <div class="weather-extra-item">
+                        <div class="extra-icon">
+                            <i class="fas fa-temperature-high"></i>
+                        </div>
+                        <div>Feels like</div>
+                        <div id="feels-like">75°F</div>
+                    </div>
+                    
+                    <div class="weather-extra-item">
+                        <div class="extra-icon">
+                            <i class="fas fa-wind"></i>
+                        </div>
+                        <div>Wind</div>
+                        <div id="wind-speed">8 mph</div>
+                    </div>
+                    
+                    <div class="weather-extra-item">
+                        <div class="extra-icon">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                        <div>Humidity</div>
+                        <div id="humidity">45%</div>
+                    </div>
+                    
+                    <div class="weather-extra-item">
+                        <div class="extra-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div>Visibility</div>
+                        <div id="visibility">10 mi</div>
+                    </div>
+                </div>
+                
+                <button class="details-toggle" id="details-toggle">Show more details</button>
+                <div class="extended-details" id="extended-details">
+                    <div class="row mt-3">
+                        <div class="col-6 col-md-3">
+                            <div class="weather-extra-item">
+                                <div class="extra-icon">
+                                    <i class="fas fa-sun"></i>
+                                </div>
+                                <div>UV Index</div>
+                                <div id="uv-index">5 (Moderate)</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="weather-extra-item">
+                                <div class="extra-icon">
+                                    <i class="fas fa-compress-arrows-alt"></i>
+                                </div>
+                                <div>Pressure</div>
+                                <div id="pressure">1015 hPa</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="weather-extra-item">
+                                <div class="extra-icon">
+                                    <i class="fas fa-sunrise"></i>
+                                </div>
+                                <div>Sunrise</div>
+                                <div id="sunrise">6:45 AM</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="weather-extra-item">
+                                <div class="extra-icon">
+                                    <i class="fas fa-sunset"></i>
+                                </div>
+                                <div>Sunset</div>
+                                <div id="sunset">8:15 PM</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="last-updated">Last updated: <span id="last-updated">Just now</span></div>
+            </div>
+        </div>
+        
+        <div class="weather-card">
+            <h3 class="mb-4">7-Day Forecast</h3>
+            <div class="row forecast-row" id="forecast-container">
+                <!-- Forecast days will be inserted here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Toggle extended details
+            $("#details-toggle").click(function() {
+                $("#extended-details").slideToggle();
+                $(this).text(function(i, text) {
+                    return text === "Show more details" ? "Hide details" : "Show more details";
+                });
+            });
+            
+            // Mock data for demonstration
+            const weatherData = {
+                current: {
+                    temp: 72,
+                    feels_like: 75,
+                    humidity: 45,
+                    wind_speed: 8,
+                    weather: [{ main: "Clear", description: "sunny skies" }],
+                    visibility: 10000,
+                    uvi: 5,
+                    pressure: 1015,
+                    sunrise: 1627969800, // Unix timestamp
+                    sunset: 1628021400,   // Unix timestamp
+                },
+                daily: [
+                    {
+                        dt: Date.now() / 1000,
+                        temp: { min: 65, max: 72 },
+                        weather: [{ main: "Clear", description: "sunny skies", icon: "01d" }],
+                        pop: 0,
+                        humidity: 45
+                    },
+                    {
+                        dt: Date.now() / 1000 + 86400,
+                        temp: { min: 68, max: 78 },
+                        weather: [{ main: "Clouds", description: "partly cloudy", icon: "02d" }],
+                        pop: 10,
+                        humidity: 50
+                    },
+                    {
+                        dt: Date.now() / 1000 + 172800,
+                        temp: { min: 70, max: 82 },
+                        weather: [{ main: "Clouds", description: "scattered clouds", icon: "03d" }],
+                        pop: 20,
+                        humidity: 55
+                    },
+                    {
+                        dt: Date.now() / 1000 + 259200,
+                        temp: { min: 65, max: 75 },
+                        weather: [{ main: "Rain", description: "light rain", icon: "10d" }],
+                        pop: 60,
+                        humidity: 70
+                    },
+                    {
+                        dt: Date.now() / 1000 + 345600,
+                        temp: { min: 62, max: 72 },
+                        weather: [{ main: "Rain", description: "moderate rain", icon: "09d" }],
+                        pop: 80,
+                        humidity: 75
+                    },
+                    {
+                        dt: Date.now() / 1000 + 432000,
+                        temp: { min: 60, max: 70 },
+                        weather: [{ main: "Thunderstorm", description: "thunderstorm", icon: "11d" }],
+                        pop: 75,
+                        humidity: 80
+                    },
+                    {
+                        dt: Date.now() / 1000 + 518400,
+                        temp: { min: 63, max: 73 },
+                        weather: [{ main: "Clear", description: "clear sky", icon: "01d" }],
+                        pop: 0,
+                        humidity: 45
+                    }
+                ]
+            };
+            
+            const location = "New York, NY";
+            
+            // Update UI with mock data
+            updateCurrentWeather(weatherData.current, location);
+            updateForecast(weatherData.daily);
+            
+            // Set interval to simulate real-time updates
+            setInterval(function() {
+                updateLastUpdated();
+            }, 60000); // Update the "last updated" time every minute
+        });
+        
+        function updateCurrentWeather(current, location) {
+            $("#current-location").text(location);
+            $("#current-temp").text(`${Math.round(current.temp)}°F`);
+            $("#weather-description").text(current.weather[0].description);
+            $("#feels-like").text(`${Math.round(current.feels_like)}°F`);
+            $("#wind-speed").text(`${current.wind_speed} mph`);
+            $("#humidity").text(`${current.humidity}%`);
+            $("#visibility").text(`${current.visibility / 1609} mi`);
+            $("#uv-index").text(getUVIndexDescription(current.uvi));
+            $("#pressure").text(`${current.pressure} hPa`);
+            $("#sunrise").text(formatTime(current.sunrise));
+            $("#sunset").text(formatTime(current.sunset));
+            
+            // Update weather icon based on conditions
+            $("#weather-icon").html(getWeatherIcon(current.weather[0].main));
+            
+            updateLastUpdated();
+        }
+        
+        function updateForecast(daily) {
+            const forecastContainer = $("#forecast-container");
+            forecastContainer.empty();
+            
+            daily.forEach((day, index) => {
+                let dayName = index === 0 ? "Today" : formatDay(day.dt);
+                
+                const forecastTemplate = `
+                    <div class="col-md-3 col-sm-6 mb-4 forecast-col">
+                        <div class="forecast-day">
+                            <div class="day-name">${dayName}</div>
+                            <div class="forecast-icon">${getWeatherIcon(day.weather[0].main)}</div>
+                            <div class="weather-description">${day.weather[0].description}</div>
+                            <div class="forecast-temp">
+                                <span class="high-temp">${Math.round(day.temp.max)}°</span> / 
+                                <span class="low-temp">${Math.round(day.temp.min)}°</span>
+                            </div>
+                            <div class="forecast-details">
+                                <div>Humidity: ${day.humidity}%</div>
+                                <div>Chance of rain: ${Math.round(day.pop * 100)}%</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                forecastContainer.append(forecastTemplate);
+            });
+        }
+        
+        function getWeatherIcon(condition) {
+            switch(condition.toLowerCase()) {
+                case 'clear':
+                    return '<i class="fas fa-sun sunny"></i>';
+                case 'clouds':
+                    return '<i class="fas fa-cloud cloudy"></i>';
+                case 'rain':
+                    return '<i class="fas fa-cloud-rain rainy"></i>';
+                case 'snow':
+                    return '<i class="fas fa-snowflake snowy"></i>';
+                case 'thunderstorm':
+                    return '<i class="fas fa-bolt stormy"></i>';
+                case 'drizzle':
+                    return '<i class="fas fa-cloud-showers-heavy rainy"></i>';
+                case 'mist':
+                case 'fog':
+                    return '<i class="fas fa-smog cloudy"></i>';
+                default:
+                    return '<i class="fas fa-sun sunny"></i>';
+            }
+        }
+        
+        function formatDay(timestamp) {
+            const date = new Date(timestamp * 1000);
+            return date.toLocaleDateString('en-US', { weekday: 'short' });
+        }
+        
+        function formatTime(timestamp) {
+            const date = new Date(timestamp * 1000);
+            return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+        }
+        
+        function updateLastUpdated() {
+            const now = new Date();
+            $("#last-updated").text(now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }));
+        }
+        
+        function getUVIndexDescription(uvi) {
+            if (uvi <= 2) return `${uvi} (Low)`;
+            if (uvi <= 5) return `${uvi} (Moderate)`;
+            if (uvi <= 7) return `${uvi} (High)`;
+            if (uvi <= 10) return `${uvi} (Very High)`;
+            return `${uvi} (Extreme)`;
+        }
+    </script>
+</body>
+</html>
