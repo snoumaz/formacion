@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pruebas de Accesibilidad</title>
+</head>
+<body>
+    <header>
+        <h1 tabindex="0">Soy un titulo</h1>
+    </header>
+    <nav >
+    <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    </nav>
+    <main>
+        
+
+        <p tabindex="0">Soy el primer parrafo</p>
+        <p tabindex="0">Soy el segundo parrafo</p>
+        <p tabindex="-1">Soy el tercer parrafo</p>
+        <a href="#">Soy un enlace</a>
+        <form action="#">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre">
+            <button type="submit">Enviar</button>
+        </form>        
+    </main>
+</body>
+</html>
