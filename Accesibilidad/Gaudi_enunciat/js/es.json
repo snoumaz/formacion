@@ -1,0 +1,45 @@
+{
+    "titulo": "Casa Batlló",
+    "subtitulo": "Una obra maestra de la arquitectura modernista",
+    "skip-link": "Saltar al contenido principal",
+    "nav-gaudi": "ANTONIO GAUDÍ",
+    "nav-edificio": "EL EDIFICIO",
+    "nav-galeria": "GALERÍA",
+    "nav-modernismo": "EL MODERNISMO",
+    "nav-opinion": "SU OPINIÓN",
+    
+    "gaudi-titulo": "Antoni Gaudí",
+    "gaudi-imagen-alt": "Retrato de Antoni Gaudí en 1878, mostrando al joven arquitecto con barba y traje formal.",
+    "gaudi-texto": "Gaudí fue un arquitecto con un sentido innato de la geometría y el volumen, así como una gran capacidad creativa que le permitía proyectar mentalmente la mayoría de sus obras antes de pasarlas a planos.",
+    "gaudi-texto2": "Las obras de Gaudí están marcadas por un fuerte sello personal, caracterizado por la búsqueda de nuevas soluciones estructurales, que logró después de toda una vida dedicada al análisis de la estructura óptima del edificio, integrado a su entorno y siendo una síntesis de todas las artes y oficios.",
+    "gaudi-texto3": "Gaudí fue un atento observador de la naturaleza, y le gustaba la libertad que expresaban sus formas. Estudió a fondo las estructuras óseas y esqueléticas de los seres vivos, así como las ramificaciones de los árboles, la forma de las hojas y las flores.",
+    "saber-mas": "Saber más...",
+    
+    "edificio-titulo": "El edificio",
+    "edificio-imagen-alt": "Vista detallada de la fachada de la Casa Batlló, mostrando los balcones con forma de máscara y las columnas que parecen huesos.",
+    "edificio-texto": "La Casa Batlló es un reflejo de la plenitud artística de Gaudí: pertenece a su etapa naturalista (primera década del siglo XX), periodo en que el arquitecto perfecciona su estilo personal, inspirándose en las formas orgánicas de la naturaleza.",
+    "edificio-texto2": "A esta casa, construida entre 1904 y 1906, se le atribuyen varias inspiraciones, como el fondo marino, la naturaleza y los dragones. El edificio fue encargado por Josep Batlló, un industrial textil propietario de varias fábricas en Barcelona.",
+    "edificio-texto3": "La fachada está elaborada con piedra arenisca de Montjuïc, cortada en formas onduladas. Las columnas tienen forma ósea con juntas que simulan tendones. Los balcones parecen máscaras o calaveras. La parte superior evoca el lomo escamoso de un dragón.",
+    
+    "galeria-titulo": "Galería de imágenes",
+    "galeria-img1-alt": "Interior del salón principal de la Casa Batlló, con sus formas curvas y ventanales que permiten la entrada de luz natural.",
+    "galeria-img2-alt": "Detalle del techo de la Casa Batlló con formas espirales y texturas orgánicas características del estilo de Gaudí.",
+    "galeria-img3-alt": "Patio interior de la Casa Batlló con azulejos de colores y formas onduladas que crean un efecto visual único.",
+    "galeria-img4-alt": "Terraza de la Casa Batlló con las chimeneas escultóricas recubiertas de mosaicos de colores brillantes.",
+    
+    "modernismo-titulo": "El modernismo",
+    "modernismo-imagen-alt": "Vista frontal de la Casa Batlló mostrando la fachada completa con sus balcones y detalles modernistas.",
+    "modernismo-texto": "El modernismo catalán fue un movimiento que se produjo en Cataluña, principalmente en Barcelona, durante el final del siglo XIX y principios del XX. Coincidió con otras corrientes similares en Europa, como el Art Nouveau francés o el Jugendstil alemán.",
+    "modernismo-texto2": "Este estilo se caracteriza por sus formas orgánicas inspiradas en la naturaleza, el uso de la línea curva y la asimetría, la ornamentación rica y detallada, y la integración de todas las artes (arquitectura, escultura, artes decorativas) en un conjunto armonioso.",
+    "modernismo-texto3": "Antoni Gaudí es considerado el máximo exponente del modernismo catalán, aunque su estilo personal trasciende esta categorización, creando obras únicas que son reconocidas mundialmente por su originalidad e innovación.",
+
+    "opinion-titulo": "Por favor denos su opinión",
+    "opinion-requerido": "Es necesario rellenar todos los campos",
+    "opinion-nombre": "Su nombre*",
+    "opinion-comentario": "Su opinión*",
+    "opinion-enviar": "Enviar opinión",
+
+    "redes-titulo": "Nuestras redes sociales",
+    "copyright": "Pon aquí tu nombre",
+    "volver-inicio": "Volver al inicio ↑"
+}
