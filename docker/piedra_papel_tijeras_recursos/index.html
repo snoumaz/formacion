@@ -1,18 +1,67 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juego P-P-T</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Piedra Papel Tijeras</title>
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
     <header>
-        <h1>JUego Piedra - Papel - Tijera</h1>
+      <h1>PIEDRA - PAPEL - TIJERAS</h1>
+      <button type="button">¿Cuál es tu nombre?</button>
+      <p></p>
     </header>
     <main>
-
+      <form name="formJuego">
+        <div>
+          <div>
+            <input
+              type="radio"
+              name="jugada"
+              id="piedra"
+              value="1"
+              checked
+            />
+            <label for="piedra">✊</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              name="jugada"
+              id="papel"
+              value="2"
+            />
+            <label for="papel">✋</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              name="jugada"
+              id="tijeras"
+              value="3"
+            />
+            <label for="tijeras">✌️</label>
+          </div>
+        </div>
+        <button type="submit">¡¡ A JUGAR CABEZON !!</button>
+      </form>
+      <div id="respuesta"></div>
+      <div id="divImagen"></div>
+      <audio id="victoria" src="assets/aplausos.mp3" type="audio/mpg">
+        <!-- <source src="assets/aplausos.mp3" > -->
+      </audio>
+      <audio id="empate" src="assets/alarma.mp3" type="audio/mpg"> 
+        
+      </audio>
+      <audio id="derrota" src="assets/gameover.mp3" type="audio/mpg">
+        
+      </audio>
     </main>
-</body>
+
+
+
+    <script src="js/game.js"></script>
+  </body>
 </html>
